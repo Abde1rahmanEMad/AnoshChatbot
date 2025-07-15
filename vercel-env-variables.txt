@@ -2,7 +2,7 @@
 NODE_ENV=production
 
 # OpenAI Configuration - REQUIRED
-OPENAI_API_KEY=your-openai-api-key-here
+OPENAI_API_KEY=sk_replace_with_your_actual_key_do_not_commit
 OPENAI_MODEL=gpt-4o
 
 # Gmail Configuration - REQUIRED
