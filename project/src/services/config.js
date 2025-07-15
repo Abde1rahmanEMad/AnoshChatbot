@@ -30,8 +30,8 @@ class ConfigService {
     this.typingDelayMin = parseInt(import.meta.env.VITE_TYPING_DELAY_MIN) || 500;
     this.typingDelayMax = parseInt(import.meta.env.VITE_TYPING_DELAY_MAX) || 2000;
     
-    // API Configuration (for future use)
-    this.apiUrl = import.meta.env.VITE_API_URL;
+    // API Configuration
+    this.apiUrl = import.meta.env.VITE_API_URL || this.getDefaultApiUrl();
     this.wsUrl = import.meta.env.VITE_WS_URL;
     
     // OpenAI Configuration (for future use)
@@ -54,6 +54,15 @@ class ConfigService {
     
     // Fallback default access codes
     return ['1234', 'DEMO2024', 'TEST123'];
+  }
+
+  // Get default API URL based on environment
+  getDefaultApiUrl() {
+    if (import.meta.env.DEV) {
+      return 'http://localhost:3001';
+    }
+    // In production, use relative URLs for Vercel deployment
+    return window.location.origin;
   }
 
   // Get storage key with prefix
