@@ -18,6 +18,10 @@ build/
 */dist/
 */build/
 
+# Copied build files (auto-generated for Vercel)
+/index.html
+/assets/
+
 # Logs
 logs
 *.log
