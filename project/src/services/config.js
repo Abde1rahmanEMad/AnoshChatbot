@@ -10,8 +10,8 @@ class ConfigService {
     this.appVersion = import.meta.env.VITE_APP_VERSION || '1.0.0';
     
     // Feature Flags
-    this.enableRealAI = import.meta.env.VITE_ENABLE_REAL_AI === 'true';
-    this.enableBackendAPI = import.meta.env.VITE_ENABLE_BACKEND_API === 'true';
+    this.enableRealAI = true; // Always use real AI
+    this.enableBackendAPI = true; // Always use backend API
     
     // Development Settings
     this.debugMode = import.meta.env.VITE_DEBUG_MODE === 'true';

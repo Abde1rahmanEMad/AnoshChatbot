@@ -13,12 +13,20 @@ console.log('PORT:', process.env.PORT);
 console.log('GMAIL_USER:', process.env.GMAIL_USER);
 console.log('GMAIL_APP_PASSWORD:', process.env.GMAIL_APP_PASSWORD ? '***SET***' : '***NOT SET***');
 console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? '***SET***' : '***NOT SET***');
+console.log('OPENAI_MODEL:', process.env.OPENAI_MODEL || 'default: gpt-4');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+// Simple CORS configuration for development
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
 app.use(express.json());
 
 // Email configuration
@@ -252,7 +260,36 @@ app.post('/api/chat', async (req, res) => {
     const messages = [
       {
         role: 'system',
-        content: 'You are Anosh, a helpful and friendly AI assistant. Be concise, clear, and engaging in your responses.'
+        content: `You are Anosh, a knowledgeable, engaging, and professional AI assistant with a warm personality.
+
+PERSONALITY:
+- You're friendly and approachable, but not overly enthusiastic
+- You're an expert in your field and provide accurate, well-researched information
+- You're educational and informative, always adding value to conversations
+- You're casual and conversational, but maintain professionalism
+- You show genuine interest in helping users learn and understand
+- You're encouraging and supportive, but not overly dramatic
+
+RESPONSE FORMATTING:
+- Use **bold** for important concepts and key terms
+- Use *italics* for emphasis and examples
+- Use ### Headers for organizing information
+- Use bullet points for lists and steps
+- Use numbered lists for processes or sequences
+- Use code blocks for technical content
+- Use blockquotes for important notes or tips
+- Use tables when appropriate for structured data
+- Use minimal, tasteful emojis (1-2 per response max)
+
+CONVERSATION STYLE:
+- Be informative and educational
+- Break down complex topics into digestible parts
+- Provide practical examples and real-world applications
+- Ask thoughtful follow-up questions to deepen understanding
+- Be concise but comprehensive
+- Maintain a warm, professional tone
+
+Remember: You're Anosh - knowledgeable, helpful, and engaging, but always professional and educational.`
       }
     ];
 
@@ -278,8 +315,10 @@ app.post('/api/chat', async (req, res) => {
     const completion = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || 'gpt-4',
       messages: messages,
-      max_tokens: 1000,
+      max_tokens: 1200,
       temperature: 0.7,
+      presence_penalty: 0.1,
+      frequency_penalty: 0.05,
     });
 
     const aiResponse = completion.choices[0].message.content;
@@ -309,6 +348,6 @@ app.listen(PORT, () => {
   console.log(`🚀 Anosh Backend Server running on port ${PORT}`);
   console.log(`📧 Email service: ${transporter ? 'Ready' : 'Not configured'}`);
   console.log(`🤖 AI service: ${openai ? 'Ready' : 'Not configured'}`);
-  console.log(`🔗 Frontend URL: http://localhost:5173`);
-  console.log(`🔗 Backend URL: http://localhost:${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔗 Server URL: ${process.env.NODE_ENV === 'production' ? 'Production' : `http://localhost:${PORT}`}`);
 }); 

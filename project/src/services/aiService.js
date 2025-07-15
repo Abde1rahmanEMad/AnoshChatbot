@@ -64,7 +64,7 @@ class AIService {
     this.responseDelay = parseInt(import.meta.env.VITE_TYPING_DELAY_MIN) || 1000;
     this.maxDelay = parseInt(import.meta.env.VITE_TYPING_DELAY_MAX) || 2000;
     this.maxMessageLength = parseInt(import.meta.env.VITE_MAX_MESSAGE_LENGTH) || 2000;
-    this.enableRealAI = import.meta.env.VITE_ENABLE_REAL_AI === 'true';
+    this.enableRealAI = true; // Always use real AI
     this.debugMode = import.meta.env.VITE_DEBUG_MODE === 'true';
   }
 
