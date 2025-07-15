@@ -88,7 +88,7 @@ const cleanupExpiredCodes = () => {
 // Initialize email transporter
 let transporter;
 try {
-  transporter = nodemailer.createTransporter(EMAIL_CONFIG);
+  transporter = nodemailer.createTransport(EMAIL_CONFIG);
 } catch (error) {
   console.error('Failed to initialize email service:', error);
 }
@@ -97,7 +97,7 @@ try {
 let openai;
 try {
   openai = new OpenAI({
-    apiKey: process.env.VITE_OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
   });
 } catch (error) {
   console.error('Failed to initialize OpenAI service:', error);
@@ -248,7 +248,7 @@ app.post('/api/chat', async (req, res) => {
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
-      model: process.env.VITE_OPENAI_MODEL || 'gpt-4',
+      model: process.env.OPENAI_MODEL || 'gpt-4',
       messages: messages,
       max_tokens: 1000,
       temperature: 0.7,

@@ -34,8 +34,7 @@ class ConfigService {
     this.apiUrl = import.meta.env.VITE_API_URL || this.getDefaultApiUrl();
     this.wsUrl = import.meta.env.VITE_WS_URL;
     
-    // OpenAI Configuration (for future use)
-    this.openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+    // OpenAI model configuration (the API key is now stored securely on the server only)
     this.openaiModel = import.meta.env.VITE_OPENAI_MODEL || 'gpt-4';
     
     // Access Codes
@@ -72,7 +71,7 @@ class ConfigService {
 
   // Check if real AI is enabled
   isRealAIEnabled() {
-    return this.enableRealAI && this.openaiApiKey;
+    return this.enableRealAI;
   }
 
   // Check if backend API is enabled
@@ -113,7 +112,6 @@ class ConfigService {
         wsUrl: this.wsUrl
       },
       openai: {
-        apiKey: this.openaiApiKey ? '***' : null, // Hide API key
         model: this.openaiModel
       },
       accessCodes: this.defaultAccessCodes

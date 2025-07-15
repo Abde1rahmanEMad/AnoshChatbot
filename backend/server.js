@@ -106,7 +106,7 @@ try {
 let openai;
 try {
   openai = new OpenAI({
-    apiKey: process.env.VITE_OPENAI_API_KEY,
+    apiKey: process.env.OPENAI_API_KEY,
   });
   console.log('OpenAI service initialized successfully');
 } catch (error) {
@@ -276,7 +276,7 @@ app.post('/api/chat', async (req, res) => {
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
-      model: process.env.VITE_OPENAI_MODEL || 'gpt-4',
+      model: process.env.OPENAI_MODEL || 'gpt-4',
       messages: messages,
       max_tokens: 1000,
       temperature: 0.7,

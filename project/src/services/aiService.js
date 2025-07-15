@@ -169,8 +169,12 @@ class AIService {
           content: msg.content || msg.text
         })).filter(msg => msg.content && msg.content.trim() !== '');
 
+        // Import config dynamically to avoid circular dependencies
+        const config = (await import('./config.js')).default;
+        const apiUrl = config.apiUrl || window.location.origin;
+        
         // Call real AI backend
-        const response = await fetch('http://localhost:3001/api/chat', {
+        const response = await fetch(`${apiUrl}/api/chat`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
