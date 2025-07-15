@@ -35,7 +35,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
             className="w-full px-4 py-3 pr-12 bg-gray-100 dark:bg-gray-700 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-500 focus:bg-white dark:focus:bg-gray-600 dark:text-gray-100 dark:placeholder-gray-400 transition-all duration-200 resize-none max-h-32"
             rows={1}
             style={{
-              height: 'auto',
               minHeight: '48px',
               height: `${Math.min(Math.max(24, message.split('\n').length * 20), 128)}px`
             }}
