@@ -96,16 +96,56 @@ try {
 // Initialize OpenAI client
 let openai;
 try {
-  openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  if (!process.env.OPENAI_API_KEY) {
+    console.error('OPENAI_API_KEY environment variable is not set');
+  } else {
+    console.log('Initializing OpenAI client with API key', process.env.OPENAI_API_KEY.substring(0, 5) + '...');
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+      dangerouslyAllowBrowser: false // Ensure server-side only
+    });
+    console.log('OpenAI client initialized successfully');
+  }
 } catch (error) {
   console.error('Failed to initialize OpenAI service:', error);
 }
 
 // Routes
 app.get('/api/', (req, res) => {
-  res.json({ message: 'Anosh Backend Server Running on Vercel' });
+  res.json({ 
+    message: 'Anosh Backend Server Running on Vercel',
+    openaiConfigured: !!openai,
+    emailConfigured: !!transporter,
+    environment: process.env.NODE_ENV,
+    modelConfigured: process.env.OPENAI_MODEL || 'Not Set'
+  });
+});
+
+// Test route for OpenAI API
+app.get('/api/test-openai', async (req, res) => {
+  try {
+    if (!openai) {
+      return res.status(500).json({ success: false, error: 'OpenAI client not initialized' });
+    }
+    
+    // Test the OpenAI API with a simple request
+    const models = await openai.models.list();
+    
+    return res.json({ 
+      success: true, 
+      message: 'OpenAI API is working correctly',
+      modelCount: models.data.length,
+      availableModels: models.data.slice(0, 5).map(model => model.id)
+    });
+  } catch (error) {
+    console.error('Error testing OpenAI API:', error);
+    return res.status(500).json({ 
+      success: false, 
+      error: error.message,
+      name: error.name,
+      type: error.type
+    });
+  }
 });
 
 // Send access code
@@ -211,12 +251,17 @@ app.post('/api/validate-code', (req, res) => {
 app.post('/api/chat', async (req, res) => {
   try {
     const { message, conversationHistory = [] } = req.body;
+    
+    console.log('API: Chat request received');
+    console.log('API: OpenAI Key available:', !!process.env.OPENAI_API_KEY);
+    console.log('API: OpenAI Model:', process.env.OPENAI_MODEL || 'default: gpt-4');
 
     if (!message) {
       return res.status(400).json({ success: false, error: 'Message is required' });
     }
 
     if (!openai) {
+      console.error('API: OpenAI client not initialized');
       return res.status(500).json({ success: false, error: 'AI service not available' });
     }
 
@@ -267,9 +312,15 @@ app.post('/api/chat', async (req, res) => {
     });
   } catch (error) {
     console.error('Failed to generate AI response:', error);
+    console.error('API: Error details:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack?.split('\n').slice(0, 3)
+    });
     res.status(500).json({
       success: false,
-      error: error.message
+      error: error.message,
+      details: error.name
     });
   }
 });
