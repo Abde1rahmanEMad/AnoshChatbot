@@ -1,19 +1,15 @@
-# Backend Configuration
-PORT=3001
-
-# Gmail Configuration
-GMAIL_USER=marwanmostafa20002000@gmail.com
-GMAIL_APP_PASSWORD=vsaoatuthsgdyptg
-
-# Environment Settings
-# Use 'production' for Vercel deployment
+# Backend Core Variables - REQUIRED
 NODE_ENV=production
 
-# OpenAI Configuration - securely stored on backend only
+# OpenAI Configuration - REQUIRED
 OPENAI_API_KEY=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
 OPENAI_MODEL=gpt-4o
 
-# Frontend Configuration (These should be added to Vercel too)
+# Gmail Configuration - REQUIRED
+GMAIL_USER=marwanmostafa20002000@gmail.com
+GMAIL_APP_PASSWORD=vsaoatuthsgdyptg
+
+# Frontend Variables - RECOMMENDED
 VITE_APP_NAME=Anosh Demo
 VITE_APP_VERSION=1.0.0
 VITE_STORAGE_PREFIX=anosh_demo
@@ -25,4 +21,3 @@ VITE_TYPING_DELAY_MIN=500
 VITE_TYPING_DELAY_MAX=2000
 VITE_ENABLE_REAL_AI=true
 VITE_OPENAI_MODEL=gpt-4o
-
