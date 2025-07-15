@@ -171,10 +171,9 @@ class AIService {
 
         // Import config dynamically to avoid circular dependencies
         const config = (await import('./config.js')).default;
-        const apiUrl = config.apiUrl || window.location.origin;
         
-        // Call real AI backend
-        const response = await fetch(`${apiUrl}/api/chat`, {
+        // Call real AI backend using dynamic API URL
+        const response = await fetch(`${config.apiUrl}/api/chat`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
