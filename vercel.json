@@ -9,7 +9,7 @@
       }
     },
     {
-      "src": "api/*.js",
+      "src": "api/index.js",
       "use": "@vercel/node"
     }
   ],
@@ -19,8 +19,16 @@
       "dest": "/api/index.js"
     },
     {
+      "src": "/assets/(.*)",
+      "dest": "/project/dist/assets/$1"
+    },
+    {
+      "src": "/",
+      "dest": "/project/dist/index.html"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/project/dist/$1"
+      "dest": "/project/dist/index.html"
     }
   ]
 }
